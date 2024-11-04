@@ -4,13 +4,33 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkLowLevel.MotorType;
 
 public class ExampleSubsystem extends SubsystemBase {
   /** Creates a new ExampleSubsystem. */
+  CANSparkMax armMotor = new CANSparkMax(ArmConstants.ARM_ID, MotorType.kBrushless);
+  DigitalInput lowerLimitSwtich = new DigitalInput(0);
+  DigitalInput upperLimitSwtich = new DigitalInput(1);
   public ExampleSubsystem() {}
-
+  public Command upCommand(){
+    return startEnd(() ->{
+      armMotor.set(ArmConstants.ARM_SPEED);
+    }, ()->{
+      armMotor.set(0);
+    });
+  }
+  public Command downCommand(){
+    return startEnd(() ->{
+      armMotor.set(-ArmConstants.ARM_SPEED);
+    }, ()->{
+      armMotor.set(0);
+    });
+  }
   /**
    * Example command factory method.
    *
